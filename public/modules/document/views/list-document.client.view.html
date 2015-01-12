@@ -1,0 +1,27 @@
+<section data-ng-controller="DocumentController">
+    <div class="page-header">
+        <h1>Documents</h1>
+    </div>
+
+    <script type="text/ng-template" id="nodes_renderer.html">
+        <div ui-tree-handle class="tree-node tree-node-content">
+
+            <a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+            {{node.title}}
+
+            <!--<a class="pull-right btn btn-danger btn-xs" nodrag ng-click="openConfirmWithPreCloseCallbackInlinedWithNestedConfirm()"><span class="glyphicon glyphicon-remove"></span></a>-->
+            <<a class="pull-right btn btn-danger btn-xs" nodrag ng-click="deleteNode(this)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="pull-right btn btn-primary btn-xs" nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+        <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.children" ui-tree-node ng-include="'nodes_renderer.html'" data-collapsed="false">
+            </li>
+        </ol>
+    </script>
+
+    <div ui-tree id="tree-root"  drag-enabled="false" empty-placeholder-enabled="false" maxDepth='10' dragDelay='0'>
+        <ol ui-tree-nodes ng-model="data">
+            <li  ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'" data-collapsed="false"></li>
+        </ol>
+    </div>
+</section>
