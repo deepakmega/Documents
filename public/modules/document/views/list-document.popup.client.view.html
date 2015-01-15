@@ -1,12 +1,21 @@
-<script type="text/ng-template" id="dialogWithNestedConfirmDialogId">
     <div class="ngdialog-message">
-        <h3>ngDialog template</h3>
-        <p>Dialog containing work in which a user has to perform a task (e.g. editing data).</p>
-        <p>'Save' would save the task's actions, while 'Cancel' would cause the task's actions to be lost.</p>
-        <p>...other controls here...</p>
+        <h3>Upload Document</h3>
+        <div>
+            <label for="docNodeName">Name of Folder/Document: </label>
+            <input type="text" id="docNodeName" name="docName" class="form-control" data-ng-model="doc.Name" placeholder="Document Name">
+        </div>
+        <div class="panel-body">
+            <input class="bottom-marg-15" type="file" name="file" file></input>
+            <!-- Progress Bar -->
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ uploadProgress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ uploadProgress }}%;">
+                    {{ uploadProgress == 0 ? '' : uploadProgress + '%' }}
+                </div>
+            </div>
+            <a class="btn btn-primary btn-block btn-lg" ng-click="upload(file)">Upload</a>
+        </div>
     </div>
     <div class="ngdialog-buttons">
         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm('Save')">Save</button>
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(doc)">Save</button>
     </div>
-</script>

@@ -17,7 +17,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.css',
 				'public/lib/ngDialog/css/ngDialog.css',
-				'public/lib/ngDialog/css/ngDialog-theme-default.css'
+				'public/lib/ngDialog/css/ngDialog-theme-default.css',
+				'public/lib/toastr/toastr.css'
 			],
 			js: [
 				'public/lib/angular/angular.js',
@@ -30,7 +31,10 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.js',
-				'public/lib/ngDialog/js/ngDialog.min.js'
+				'public/lib/jquery/dist/jquery.min.js',
+				'public/lib/ngDialog/js/ngDialog.min.js',
+				'public/lib/toastr/toastr.js',
+				'public/lib/aws-sdk-js/dist/aws-sdk.min.js'
 			]
 		},
 		css: [

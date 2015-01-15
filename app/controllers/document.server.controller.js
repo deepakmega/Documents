@@ -5,7 +5,7 @@
  */
 var mongoose = require('mongoose'),
     errorHandler = require('./errors.server.controller'),
-    document = mongoose.model('Document'),
+    documentModel = mongoose.model('Document'),
     _ = require('lodash');
 
 
@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  * Create a Document
  */
 exports.create = function(req, res) {
-    var doc = new document(req.body);
+    var doc = new documentModel(req.body);
     doc.user = req.user;
 
     doc.save(function(err) {
@@ -31,9 +31,7 @@ exports.create = function(req, res) {
  * List of Documents
  */
 exports.list = function(req, res) {
-    console.log("Document List Called");
-
-    document.GetFullArrayTree(function(err, tree){
+    documentModel.GetFullArrayTree(function(err, tree){
         res.jsonp(tree);
     });
 };
@@ -42,7 +40,7 @@ exports.list = function(req, res) {
  * Creates a Document Node
  */
 exports.create = function(req, res) {
-    var docNode = new document(req.body);
+    var docNode = new documentModel(req.body);
     docNode.user = req.user;
     docNode.created = Date.now();
     docNode.save(function(err, data){
@@ -62,7 +60,7 @@ exports.create = function(req, res) {
 exports.delete = function(req, res) {
     var docNodeId = req.body.id ;
 
-    document.Remove( { _id : docNodeId }, function(err) {
+    documentModel.Remove( { _id : docNodeId }, function(err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -77,7 +75,7 @@ exports.delete = function(req, res) {
  * Creates a Root Document Node
  */
 exports.createRoot = function(req, res) {
-    var docNode = new document(
+    var docNode = new documentModel(
         {name: 'Root',
         title: 'Root',
         url: 'Root'});
