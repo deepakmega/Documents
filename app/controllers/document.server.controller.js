@@ -10,29 +10,16 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Create a Document
- */
-exports.create = function(req, res) {
-    var doc = new documentModel(req.body);
-    doc.user = req.user;
-
-    doc.save(function(err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(document);
-        }
-    });
-};
-
-/**
  * List of Documents
  */
 exports.list = function(req, res) {
     documentModel.GetFullArrayTree(function(err, tree){
-        res.jsonp(tree);
+        if(Array.isArray(tree)) {
+            res.jsonp(tree);
+        }
+        else{
+            res.jsonp([]);
+        }
     });
 };
 
@@ -78,6 +65,7 @@ exports.createRoot = function(req, res) {
     var docNode = new documentModel(
         {name: 'Root',
         title: 'Root',
+        isFolder: true,
         url: 'Root'});
     docNode.user = req.user;
     docNode.created = Date.now();

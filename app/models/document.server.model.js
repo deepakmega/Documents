@@ -25,6 +25,10 @@ var DocumentSchema = new Schema({
         default: '',
         trim: true
     },
+    isFolder: {
+      type: Boolean,
+        default: false
+    },
     created: {
         type: Date,
         default: Date.now

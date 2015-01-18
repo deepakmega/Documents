@@ -7,27 +7,11 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
 
         $scope.sizeLimit = 10585760; // 10MB in Bytes
         $scope.uploadProgress = 0;
-        $scope.creds = {access_key:'AKIAIZ7TSXPBUGRQKINA' , secret_key:'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', bucket:'docstore2015'};
+        $scope.creds = {access_key:'AKIAI7P42EMTFT2test' , secret_key:'test/cEJ6hsrVJQlrziQv78BYhPfPcuOQVMqq4w', bucket:'docstore2015'};
 
         $scope.authentication = Authentication;
+
         $scope.data = documentService.getData();
-
-        $scope.newSubItem = function(scope) {
-            var nodeData = scope.$modelValue;
-
-            var newNode ={
-                name: 'newNode',
-                title: 'newNodeTitle',
-                parentId: nodeData._id,
-                url: 'newNodeURL'};
-
-            documentService.update(newNode, function() {
-                $scope.data = documentService.getData();
-                $location.path('documents');
-            }, function(errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
 
         $scope.deleteNode = function(scope) {
             var nodeData = scope.$modelValue;
@@ -76,7 +60,8 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
                     name: doc?doc.Name:$scope.uploadedURL,
                     title: doc?doc.Name:$scope.uploadedURL,
                     parentId: parentID,
-                    url: $scope.uploadedURL
+                    url: $scope.uploadedURL,
+                    isFolder: doc.IsFolder
                 };
 
                 documentService.update(newNode, function () {
@@ -91,7 +76,7 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
         $scope.upload = function(scopeFile) {
             AWS.config.update({ accessKeyId: $scope.creds.access_key, secretAccessKey: $scope.creds.secret_key });
             AWS.config.region = 'us-east-1';
-            var bucket = new AWS.S3({ params: { Bucket: $scope.creds.bucket } });
+            var bucket = new AWS.S3({ params: { Bucket: $scope.creds.bucket ,ACL: 'private | public-read | public-read-write | authenticated-read'} });
             $scope.uploadedURL = null;
             if(scopeFile) {
                 // Perform File Size Check First
@@ -128,6 +113,16 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
                 // No File Selected
                 toastr.error('Please select a file to upload');
             }
+        };
+
+        $scope.createRootNode = function() {
+
+                documentService.createRootNode(function () {
+                    $scope.data = documentService.getData();
+                    $location.path('documents');
+                }, function (errorResponse) {
+                    $scope.error = errorResponse.data.message;
+                });
         };
 
         $scope.fileSizeLabel = function() {

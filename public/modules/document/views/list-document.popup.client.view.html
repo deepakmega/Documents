@@ -1,10 +1,15 @@
     <div class="ngdialog-message">
-        <h3>Upload Document</h3>
+        <h3>Create Node</h3>
         <div>
+            <label for="docNodeIsFolder">Is Folder? : </label>
+            <input type="checkbox" id="docNodeIsFolder" name="docIsFolder" ng-init="doc.IsFolder=true" data-ng-model="doc.IsFolder" placeholder="Document IsFolder" checked>
+        </div>
+        <div ng-show="doc.IsFolder">
             <label for="docNodeName">Name of Folder/Document: </label>
             <input type="text" id="docNodeName" name="docName" class="form-control" data-ng-model="doc.Name" placeholder="Document Name">
         </div>
-        <div class="panel-body">
+
+        <div class="panel-body" ng-hide="doc.IsFolder">
             <input class="bottom-marg-15" type="file" name="file" file></input>
             <!-- Progress Bar -->
             <div class="progress">

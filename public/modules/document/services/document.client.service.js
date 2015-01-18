@@ -6,7 +6,8 @@ angular.module('document').factory('documentService', ['$resource',
         return $resource('documents/:nodeId',  {nodeId:'@id'}, {
             update: { method: 'POST' },
             'getData':  {method:'GET', isArray:true},
-            'removeNode': { method: 'POST' }
+            'removeNode': { method: 'POST' },
+            'createRootNode': {  method: 'GET', url: 'documents/createRoot'}
         });
     }
 ]);
