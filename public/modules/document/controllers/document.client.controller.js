@@ -5,12 +5,7 @@
 angular.module('document').controller('DocumentController', ['$scope', '$stateParams', '$location', 'Authentication', 'documentService', 'ngDialog',
     function($scope, $stateParams, $location, Authentication, documentService, ngDialog) {
 
-        $scope.sizeLimit = 10585760; // 10MB in Bytes
-        $scope.uploadProgress = 0;
-        $scope.creds = {access_key:'AKIAI7P42EMTFT2test' , secret_key:'test/cEJ6hsrVJQlrziQv78BYhPfPcuOQVMqq4w', bucket:'docstore2015'};
-
         $scope.authentication = Authentication;
-
         $scope.data = documentService.getData();
 
         $scope.deleteNode = function(scope) {
@@ -29,6 +24,7 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
             ngDialog.openConfirm({
                     template: '/modules/document/views/list-document.popup.client.view.html',
                     className: 'ngdialog-theme-default',
+                    controller: 'docNodeCreateController',
                     //preCloseCallback: function(value) {
                     //    var nestedConfirmDialog = ngDialog.openConfirm({
                     //        template:
@@ -57,10 +53,10 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
         $scope.createNewNode = function(doc, parentID) {
             if(doc || $scope.uploadedURL) {
                 var newNode = {
-                    name: doc?doc.Name:$scope.uploadedURL,
-                    title: doc?doc.Name:$scope.uploadedURL,
+                    name: doc.IsFolder?doc.Name:doc.uploadedURL,
+                    title: doc.IsFolder?doc.Name:doc.uploadedURL,
                     parentId: parentID,
-                    url: $scope.uploadedURL,
+                    url: doc.uploadedURL,
                     isFolder: doc.IsFolder
                 };
 
@@ -73,48 +69,6 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
             }
         };
 
-        $scope.upload = function(scopeFile) {
-            AWS.config.update({ accessKeyId: $scope.creds.access_key, secretAccessKey: $scope.creds.secret_key });
-            AWS.config.region = 'us-east-1';
-            var bucket = new AWS.S3({ params: { Bucket: $scope.creds.bucket ,ACL: 'private | public-read | public-read-write | authenticated-read'} });
-            $scope.uploadedURL = null;
-            if(scopeFile) {
-                // Perform File Size Check First
-                var fileSize = Math.round(parseInt(scopeFile.size));
-                if (fileSize > $scope.sizeLimit) {
-                    toastr.error('Sorry, your attachment is too big. <br/> Maximum ' + $scope.fileSizeLabel() + ' file attachment allowed','File Too Large');
-                    return false;
-                }
-                // Prepend Unique String To Prevent Overwrites
-                var uniqueFileName = $scope.uniqueString() + '-' + scopeFile.name;
-                var params = { Key: uniqueFileName, ContentType: scopeFile.type, Body: scopeFile, ServerSideEncryption: 'AES256' };
-                bucket.putObject(params, function(err, data) {
-                    if(err) {
-                        toastr.error(err.message,err.code);
-                        return false;
-                    }
-                    else {
-                        // Upload Successfully Finished
-                        toastr.success('File Uploaded Successfully', 'Done');
-                        $scope.uploadedURL = 'https://s3.amazonaws.com/docstore2015/' + uniqueFileName;
-                        // Reset The Progress Bar
-                        setTimeout(function() {
-                            $scope.uploadProgress = 0;
-                            $scope.$digest();
-                        }, 4000);
-                    }
-                })
-                    .on('httpUploadProgress',function(progress) {
-                        $scope.uploadProgress = Math.round(progress.loaded / progress.total * 100);
-                        $scope.$digest();
-                    });
-            }
-            else {
-                // No File Selected
-                toastr.error('Please select a file to upload');
-            }
-        };
-
         $scope.createRootNode = function() {
 
                 documentService.createRootNode(function () {
@@ -123,19 +77,6 @@ angular.module('document').controller('DocumentController', ['$scope', '$statePa
                 }, function (errorResponse) {
                     $scope.error = errorResponse.data.message;
                 });
-        };
-
-        $scope.fileSizeLabel = function() {
-            // Convert Bytes To MB
-            return Math.round($scope.sizeLimit / 1024 / 1024) + 'MB';
-        };
-        $scope.uniqueString = function() {
-            var text = '';
-            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            for( var i=0; i < 8; i++ ) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
         };
     }
 ]);
