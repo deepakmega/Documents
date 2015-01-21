@@ -15,5 +15,10 @@ module.exports = function(app) {
 
     app.route('/documents/createRoot')
         .get(users.requiresLogin, documents.createRoot);
-    //app.route('/documents/create')
+
+    app.route('/documents/getAWSCred')
+        .get(users.requiresLogin, documents.getAWSCred);
+
+    app.route('/documents/folderStructure')
+        .get(users.requiresLogin, documents.getFolderStructure);
 };

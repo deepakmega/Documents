@@ -80,6 +80,21 @@ exports.createRoot = function(req, res) {
     });
 };
 
+exports.getAWSCred = function(req, res) {
+    res.jsonp({access_key:'AKIAI7P42EMTFT2AKKGQ' , secret_key:'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', bucket:'docstore2015'});
+};
+
+exports.getFolderStructure= function(req, res) {
+    documentModel.GetFullArrayTree(function(err, tree){
+        if(Array.isArray(tree)) {
+            res.jsonp(tree);
+        }
+        else{
+            res.jsonp([]);
+        }
+    });
+};
+
 /**
  * Document authorization middleware
  */

@@ -8,16 +8,16 @@ angular.module('document').config(['$stateProvider',
             state('listDocuments', {
                 url: '/documents',
                 templateUrl: 'modules/document/views/list-document.client.view.html'
-            });
-           /* .
-            state('createUpload', {
-                url: '/uploads/create',
-                templateUrl: 'modules/uploads/views/create-upload.client.view.html'
+            }).
+            state('uploadDocuments', {
+                url: '/documents/Upload',
+                templateUrl: 'modules/document/views/upload-document.client.view.html'
             }).
             state('viewUpload', {
-                url: '/uploads/:uploadId',
-                templateUrl: 'modules/uploads/views/view-upload.client.view.html'
-            }).
+                url: '/documents/Edit',
+                templateUrl: 'modules/document/views/edit-document.client.view.html'
+            })
+            /* .
             state('editUpload', {
                 url: '/uploads/:uploadId/edit',
                 templateUrl: 'modules/uploads/views/edit-upload.client.view.html'

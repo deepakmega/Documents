@@ -7,7 +7,9 @@ angular.module('document').factory('documentService', ['$resource',
             update: { method: 'POST' },
             'getData':  {method:'GET', isArray:true, url: 'documents'},
             'removeNode': { method: 'POST' },
-            'createRootNode': {  method: 'GET', url: 'documents/createRoot'}
+            'createRootNode': {  method: 'GET', url: 'documents/createRoot'},
+            'getAWSCred':{method: 'GET', url: 'documents/getAWSCred'},
+            'getFolderData': {method:'GET', isArray:true, url: 'documents/folderStructure'}
         });
     }
 ]);

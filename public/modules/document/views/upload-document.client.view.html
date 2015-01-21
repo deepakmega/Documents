@@ -1,6 +1,6 @@
-<section data-ng-controller="DocumentListController" >
+<section data-ng-controller="DocumentUploadController" >
     <div class="page-header">
-        <h1>Documents List</h1>
+        <h1>Documents</h1>
     </div>
     <div data-ng-show="data.$resolved && data.length">
     <script type="text/ng-template" id="nodes_renderer.html">
@@ -10,8 +10,8 @@
             <a href={{node.url}} ng-if="node.url" target="_blank">{{node.name}}</a>
             <a ng-if="!node.url" >{{node.name}}</a>
 
-           <!-- <a class="pull-right btn btn-danger btn-xs" nodrag ng-click="deleteNode(this)"><span class="glyphicon glyphicon-remove"></span></a>
-            <a class="pull-right btn btn-primary btn-xs" ng-if="node.isFolder" nodrag ng-click="openConfirmWithPreCloseCallbackInlinedWithNestedConfirm(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>-->
+            <a class="pull-right btn btn-danger btn-xs" ng-if="!node.isFolder" nodrag ng-click="deleteNode(this)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="pull-right btn btn-primary btn-xs" ng-if="node.isFolder" nodrag ng-click="openConfirmWithPreCloseCallbackInlinedWithNestedConfirm(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
         </div>
         <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
             <li ng-repeat="node in node.children" ui-tree-node ng-include="'nodes_renderer.html'" data-collapsed="false">
