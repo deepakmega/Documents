@@ -81,7 +81,7 @@ exports.createRoot = function(req, res) {
 };
 
 exports.getAWSCred = function(req, res) {
-    res.jsonp({access_key:'AKIAI7P42EMTFT2AKKGQ' , secret_key:'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', bucket:'docstore2015'});
+    res.jsonp({access_key:'AKIAI7P42testFT2AKKGQ' , secret_key:'CmN8P/cEJ6hstestiQv78BYhPfPcuOQVMqq4w', bucket:'docstore2015'});
 };
 
 exports.getFolderStructure= function(req, res) {
