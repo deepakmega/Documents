@@ -12,7 +12,7 @@ angular.module('document').controller('DocumentUploadController', ['$scope', '$s
             var nodeData = scope.$modelValue;
             documentService.removeNode({id: nodeData._id}, function() {
                 $scope.data = documentService.getData();
-                $location.path('documents');
+                $location.path('documents/Upload');
             });
         };
 
@@ -62,7 +62,7 @@ angular.module('document').controller('DocumentUploadController', ['$scope', '$s
 
                 documentService.update(newNode, function () {
                     $scope.data = documentService.getData();
-                    $location.path('documents');
+                    $location.path('documents/Upload');
                 }, function (errorResponse) {
                     $scope.error = errorResponse.data.message;
                 });
@@ -73,7 +73,7 @@ angular.module('document').controller('DocumentUploadController', ['$scope', '$s
 
             documentService.createRootNode(function () {
                 $scope.data = documentService.getData();
-                $location.path('documents');
+                $location.path('documents/Upload');
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });

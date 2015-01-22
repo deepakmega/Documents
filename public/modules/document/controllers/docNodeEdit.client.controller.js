@@ -12,7 +12,7 @@ angular.module('document').controller('DocumentEditController', ['$scope', '$sta
             var nodeData = scope.$modelValue;
             documentService.removeNode({id: nodeData._id}, function() {
                 $scope.data = documentService.getData();
-                $location.path('documents');
+                $location.path('documents/Edit');
             });
         };
 
@@ -62,7 +62,7 @@ angular.module('document').controller('DocumentEditController', ['$scope', '$sta
 
                 documentService.update(newNode, function () {
                     $scope.data = documentService.getData();
-                    $location.path('documents');
+                    $location.path('documents/Edit');
                 }, function (errorResponse) {
                     $scope.error = errorResponse.data.message;
                 });
@@ -73,7 +73,7 @@ angular.module('document').controller('DocumentEditController', ['$scope', '$sta
 
                 documentService.createRootNode(function () {
                     $scope.data = documentService.getData();
-                    $location.path('documents');
+                    $location.path('documents/Edit');
                 }, function (errorResponse) {
                     $scope.error = errorResponse.data.message;
                 });
