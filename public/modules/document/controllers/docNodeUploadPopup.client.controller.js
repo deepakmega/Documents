@@ -9,6 +9,8 @@ angular.module('document').controller('docNodeUploadController', ['$scope', '$st
         $scope.uploadProgress = 0;
         $scope.creds = documentService.getAWSCred();
         $scope.authentication = Authentication;
+        $scope.disableUploadBtn = false;
+        $scope.uploadMessage = '';
 
         $scope.upload = function(scopeFile) {
             AWS.config.update({ accessKeyId: $scope.creds.access_key, secretAccessKey: $scope.creds.secret_key });
@@ -28,14 +30,18 @@ angular.module('document').controller('docNodeUploadController', ['$scope', '$st
                 bucket.putObject(params, function(err, data) {
                     if(err) {
                         toastr.error(err.message,err.code);
+                        $scope.uploadMessage = 'Error while uploading.';
                         return false;
                     }
                     else {
                         // Upload Successfully Finished
                         toastr.success('File Uploaded Successfully', 'Done');
+                        $scope.disableUploadBtn = true;
+                        $scope.uploadMessage = 'File Uploaded Successfully.';
                         $scope.doc.uploadedURL = 'https://s3.amazonaws.com/docstore2015/' + uniqueFileName;
                         $scope.doc.Name=uniqueFileName;
                         $scope.uploadedURL = 'https://s3.amazonaws.com/docstore2015/' + uniqueFileName;
+                        $scope.createNewNode($scope.doc, $scope.parentID);
                         // Reset The Progress Bar
                         setTimeout(function() {
                             $scope.uploadProgress = 0;
@@ -51,6 +57,25 @@ angular.module('document').controller('docNodeUploadController', ['$scope', '$st
             else {
                 // No File Selected
                 toastr.error('Please select a file to upload');
+            }
+        };
+
+        $scope.createNewNode = function(doc, parentID) {
+            if(doc) {
+                var newNode = {
+                    name: doc.Name,
+                    title: doc.Name,
+                    parentId: parentID,
+                    url: doc.isFolder? '':doc.uploadedURL,
+                    isFolder: doc.isFolder
+                };
+
+                documentService.update(newNode, function () {
+                    $scope.data = documentService.getData();
+                    $location.path('documents/Upload');
+                }, function (errorResponse) {
+                    $scope.error = errorResponse.data.message;
+                });
             }
         };
 

@@ -12,7 +12,6 @@ var DocumentSchema = new Schema({
     name: {
         type: String,
         default: '',
-        required: 'Please fill Name',
         trim: true
     },
     title: {

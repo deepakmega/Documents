@@ -8,10 +8,7 @@
                     {{ uploadProgress == 0 ? '' : uploadProgress + '%' }}
                 </div>
             </div>
-            <a class="btn btn-primary btn-block btn-lg" ng-click="upload(file)">Upload</a>
+            <a class="btn btn-primary btn-block btn-lg" ng-hide="disableUploadBtn" ng-click="upload(file)">Upload</a>
+            <label> {{uploadMessage}} </label>
         </div>
-    </div>
-    <div class="ngdialog-buttons">
-        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(doc)">Save</button>
     </div>

@@ -16,7 +16,7 @@ angular.module('document').config(['$stateProvider',
             state('viewUpload', {
                 url: '/documents/Edit',
                 templateUrl: 'modules/document/views/edit-document.client.view.html'
-            })
+            });
             /* .
             state('editUpload', {
                 url: '/uploads/:uploadId/edit',

@@ -21,6 +21,7 @@ angular.module('document').controller('DocumentUploadController', ['$scope', '$s
         };
 
         $scope.openConfirmWithPreCloseCallbackInlinedWithNestedConfirm = function (scope) {
+            $scope.parentID = scope.$modelValue._id;
             ngDialog.openConfirm({
                 template: '/modules/document/views/upload-document.popup.client.view.html',
                 className: 'ngdialog-theme-default',
@@ -42,31 +43,16 @@ angular.module('document').controller('DocumentUploadController', ['$scope', '$s
             })
                 .then(function(value){
                     console.log('resolved:' + value);
-                    $scope.createNewNode(value, scope.$modelValue._id);
+                    //$scope.createNewNode(value, scope.$modelValue._id);
                     $scope.uploadedURL = null;
+                    $scope.data = documentService.getData();
+                    $location.path('documents/Upload');
                 }, function(value){
                     console.log('rejected:' + value);
                     $scope.uploadedURL = null;
-                });
-        };
-
-        $scope.createNewNode = function(doc, parentID) {
-            if(doc || $scope.uploadedURL) {
-                var newNode = {
-                    name: doc.Name,
-                    title: doc.Name,
-                    parentId: parentID,
-                    url: doc.IsFolder? doc.uploadedURL:'',
-                    isFolder: doc.IsFolder
-                };
-
-                documentService.update(newNode, function () {
                     $scope.data = documentService.getData();
                     $location.path('documents/Upload');
-                }, function (errorResponse) {
-                    $scope.error = errorResponse.data.message;
                 });
-            }
         };
 
         $scope.createRootNode = function() {
