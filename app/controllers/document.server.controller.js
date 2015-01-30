@@ -13,7 +13,8 @@ var mongoose = require('mongoose'),
  * List of Documents
  */
 exports.list = function(req, res) {
-    documentModel.GetFullArrayTree(function(err, tree){
+    documentModel.GetArrayTree({user: req.user}, function(err, tree)
+    {
         if(Array.isArray(tree)) {
             res.jsonp(tree);
         }
@@ -21,6 +22,14 @@ exports.list = function(req, res) {
             res.jsonp([]);
         }
     });
+    /*documentModel.GetFullArrayTree(function(err, tree){
+        if(Array.isArray(tree)) {
+            res.jsonp(tree);
+        }
+        else{
+            res.jsonp([]);
+        }
+    });*/
 };
 
 /**
@@ -81,11 +90,12 @@ exports.createRoot = function(req, res) {
 };
 
 exports.getAWSCred = function(req, res) {
-    res.jsonp({access_key:'AKIAIOICLWCGNQHtest' , secret_key:'w6z7testc37tX1A2aH2DzQAKI+ij5WKMtD0O8Lg', bucket:'docstore2015'});
+    res.jsonp({access_key:'AKIAIOICLWCGNQHZMY4A' , secret_key:'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', bucket:'docstore2015'});
 };
 
 exports.getFolderStructure= function(req, res) {
-    documentModel.GetFullArrayTree(function(err, tree){
+    documentModel.GetArrayTree({user: req.user}, function(err, tree)
+    {
         if(Array.isArray(tree)) {
             res.jsonp(tree);
         }
